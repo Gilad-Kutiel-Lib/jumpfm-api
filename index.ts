@@ -31,6 +31,10 @@ export interface Item {
 
 export interface Msg {
     txt: string
+    dataTitle?: string
+}
+
+export interface StyledMsg extends Msg {
     classes: string[]
 }
 
@@ -48,13 +52,17 @@ export interface PanelListener {
 export interface Panel {
     getSelectedItemsPaths(): string[]
     getUrl(): Url
+    getPath(): string
     getItems(): Item[]
     listen(listener: PanelListener): void
     cd(path: string): void
 }
 
 export interface StatusBar {
-    info(key: string, txt: string, clearTimeout?: number): void
+    info(key: string, msg: Msg, clearTimeout?: number): void
+    warn(key: string, msg: Msg, clearTimeout?: number): void
+    err(key: string, msg: Msg, clearTimeout?: number): void
+    clear(key: string): void
 }
 
 export interface JumpFm {
@@ -70,4 +78,5 @@ export interface JumpFm {
         filterMode: () => void
     }
     getActivePanel(): Panel
+    getPassivePanel(): Panel
 }
