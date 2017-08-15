@@ -73,6 +73,12 @@ export interface Panel {
     itemFromPath(path: string): Item
     getCurItem(): Item
     getSelectedItems(): Item[]
+    step(d: number, select?: boolean)
+    getCur(): number
+    selectAll(): void
+    deselectAll(): void
+    toggleSel(): void
+    filter(substr: string): void
 }
 
 export interface StatusBar {
@@ -93,11 +99,13 @@ export interface JumpFm {
     readonly nodegit
     readonly electron: Electron.AllElectron
 
-    bindKeys(name: string, keys: string[], action: () => void): {
+    bindKeys(name: string, keys?: string[], action?: () => void): {
         filterMode(differentKeys?: string[],
             differentAction?: () => void,
         )
     }
     getActivePanel(): Panel
     getPassivePanel(): Panel
+    switchPanel(): void
+    swapPanels(): void
 }
