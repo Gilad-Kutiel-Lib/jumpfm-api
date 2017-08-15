@@ -52,7 +52,16 @@ export interface PanelListener {
     onPanelItemsSet?: () => void
 }
 
+export interface PanelView {
+    getRowCountInPage(): number
+    showFilter(): void
+    hideFilter(): void
+    scroll(rowNum: number): void
+}
+
 export interface Panel {
+    view: PanelView
+
     getSelectedItemsPaths(): string[]
     getUrl(): Url
     getPath(): string
@@ -67,6 +76,7 @@ export interface Panel {
 }
 
 export interface StatusBar {
+    msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
     info(key: string, msg: Msg, clearTimeout?: number): void
     warn(key: string, msg: Msg, clearTimeout?: number): void
     err(key: string, msg: Msg, clearTimeout?: number): void
