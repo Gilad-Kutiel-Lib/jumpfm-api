@@ -105,6 +105,7 @@ export interface JumpFm {
         )
     }
     getActivePanel(): Panel
+    getActivePanelIndex(): 0 | 1
     getPassivePanel(): Panel
     switchPanel(): void
     swapPanels(): void
