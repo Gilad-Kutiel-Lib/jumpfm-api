@@ -93,7 +93,6 @@ export interface JumpFm {
     readonly nodegit
     readonly electron: Electron.AllElectron
 
-    opn(path: string): void
     bindKeys(name: string, keys: string[], action: () => void): {
         filterMode(differentKeys?: string[],
             differentAction?: () => void,
