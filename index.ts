@@ -20,19 +20,37 @@ export interface Settings {
 }
 
 export interface Item {
-    classes: string[]
+    icon: string
     path: string
+    name: string
+    size: number
+    mtime: number
+    sel: boolean
+    classes: string[]
+}
+
+export interface Msg {
+    txt: string
+    classes: string[]
 }
 
 export interface Url {
     protocol: string
     path: string
+    query: { [key: string]: any }
+}
+
+export interface PanelListener {
+    onPanelCd?: (url?: Url) => void
+    onPanelItemsSet?: () => void
 }
 
 export interface Panel {
     getSelectedItemsPaths(): string[]
     getUrl(): Url
     getItems(): Item[]
+    listen(listener: PanelListener): void
+    cd(path: string): void
 }
 
 export interface StatusBar {
