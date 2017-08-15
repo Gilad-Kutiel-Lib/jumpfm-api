@@ -84,14 +84,14 @@ export interface StatusBar {
 }
 
 export interface JumpFm {
+    readonly package
     readonly statusBar: StatusBar
     readonly root: string
     readonly settings: Settings
     readonly dialog: Dialog
     readonly panels: Panel[]
-    readonly clipboard: Electron.Clipboard
-    readonly package
     readonly nodegit
+    readonly electron: Electron.AllElectron
 
     opn(path: string): void
     bindKeys(name: string, keys: string[], action: () => void): {
