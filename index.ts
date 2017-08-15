@@ -56,6 +56,8 @@ export interface Panel {
     getItems(): Item[]
     listen(listener: PanelListener): void
     cd(path: string): void
+    setItems(items: Item[]): void
+    itemFromPath(path: string): Item
 }
 
 export interface StatusBar {
@@ -71,6 +73,7 @@ export interface JumpFm {
     readonly settings: Settings
     readonly dialog: Dialog
     readonly panels: Panel[]
+    readonly package
     readonly nodegit
 
     opn(path: string): void
