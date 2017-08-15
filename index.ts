@@ -1,3 +1,5 @@
+import { } from 'electron'
+
 export interface Suggestion {
     value: string
     html: string
@@ -58,6 +60,8 @@ export interface Panel {
     cd(path: string): void
     setItems(items: Item[]): void
     itemFromPath(path: string): Item
+    getCurItem(): Item
+    getSelectedItems(): Item[]
 }
 
 export interface StatusBar {
@@ -73,12 +77,15 @@ export interface JumpFm {
     readonly settings: Settings
     readonly dialog: Dialog
     readonly panels: Panel[]
+    readonly clipboard: Electron.Clipboard
     readonly package
     readonly nodegit
 
     opn(path: string): void
     bindKeys(name: string, keys: string[], action: () => void): {
-        filterMode: () => void
+        filterMode(differentKeys?: string[],
+            differentAction?: () => void,
+        )
     }
     getActivePanel(): Panel
     getPassivePanel(): Panel
