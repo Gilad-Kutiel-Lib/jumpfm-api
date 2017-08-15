@@ -19,6 +19,7 @@ export interface Dialog {
 
 export interface Settings {
     getStr(key: string, defaultValue: string): string
+    getNum(key: string, defaultValue: number): number
 }
 
 export interface Item {
@@ -58,6 +59,7 @@ export interface Panel {
     getItems(): Item[]
     listen(listener: PanelListener): void
     cd(path: string): void
+    cd(url: Url): void
     setItems(items: Item[]): void
     itemFromPath(path: string): Item
     getCurItem(): Item
