@@ -96,7 +96,6 @@ export interface JumpFm {
     readonly settings: Settings
     readonly dialog: Dialog
     readonly panels: Panel[]
-    readonly nodegit
     readonly electron: Electron.AllElectron
 
     bindKeys(name: string, keys?: string[], action?: () => void): {
