@@ -2,3 +2,4 @@
 *.swp
 *.map
 node_modules/
+*.log
