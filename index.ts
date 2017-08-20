@@ -6,7 +6,6 @@ export interface Suggestion {
 }
 
 export interface DialogSpec {
-    onDialogOpen: (input: HTMLInputElement) => void
     label: string
     onOpen?: (input: HTMLInputElement) => void
     onChange?: (val: string) => Suggestion[]
