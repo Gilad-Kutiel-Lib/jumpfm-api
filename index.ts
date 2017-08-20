@@ -1,5 +1,3 @@
-import { } from 'electron'
-
 export interface Suggestion {
     value: string
     html: string
@@ -96,7 +94,8 @@ export interface JumpFm {
     readonly settings: Settings
     readonly dialog: Dialog
     readonly panels: Panel[]
-    readonly electron: Electron.AllElectron
+    // Electron.AllElectron
+    readonly electron
 
     bindKeys(name: string, keys?: string[], action?: () => void): {
         filterMode(differentKeys?: string[],
