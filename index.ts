@@ -4,11 +4,12 @@ export interface Suggestion {
 }
 
 export interface DialogSpec {
-    onDialogOpen: (input: HTMLInputElement) => void
     label: string
-    onOpen?: (input: HTMLInputElement) => void
     onChange?: (val: string) => Suggestion[]
+    onOpen?: (input: HTMLInputElement) => void
+
     onAccept: (val: string, sug: Suggestion) => void
+    onDialogOpen: (input: HTMLInputElement) => void
 }
 
 export interface Dialog {
@@ -20,23 +21,25 @@ export interface Settings {
     getNum(key: string, defaultValue: number): number
 }
 
-export interface ItemSet {
+export interface File {
     path: string
     name: string
 }
 
-export interface ItemGet {
+export interface Item {
     path: string
     name: string
 
-    setIcon(icon: string): ItemGet
-    setSize(size: number): ItemGet
-    setTime(time: number): ItemGet
+    setIcon(icon: string): Item
+    setSize(size: number): Item
+    setTime(time: number): Item
+    hide(): Item
+    show(): Item
 }
 
 export interface Msg {
-    txt: string
     dataTitle?: string
+    txt: string
 }
 
 export interface StyledMsg extends Msg {
@@ -44,8 +47,8 @@ export interface StyledMsg extends Msg {
 }
 
 export interface Url {
-    protocol: string
     path: string
+    protocol: string
     query: { [key: string]: any }
 }
 
@@ -55,23 +58,21 @@ export interface PanelListener {
 }
 
 export interface Panel {
-    // cd(path: string): void
-    // cd(url: Url): void
-    // deselectAll(): void
-    // filter(substr: string): void
-    // getCur(): number
-    // getCurItem(): ItemGet
-    getItems(): ItemGet[]
+    cd(path: string): void
+    cd(url: Url): void
+    deselectAll(): void
+    filter(substr: string): void
+    getCur(): number
+    getCurItem(): Item
+    getItems(): Item[]
     getPath(): string
-    // getSelectedItems(): ItemGet[]
-    // getSelectedItemsPaths(): string[]
+    getSelectedItems(): Item[]
     getUrl(): Url
-    // itemFromPath(path: string): ItemGet
     listen(listener: PanelListener): void
-    // selectAll(): void
-    setItems(items: ItemSet[]): Panel
-    // step(d: number, select?: boolean)
-    // toggleSel(): void
+    selectAll(): void
+    setItems(items: File[]): Panel
+    step(d: number, select?: boolean)
+    toggleCurSel(): void
 }
 
 export interface StatusBar {
@@ -83,14 +84,14 @@ export interface StatusBar {
 }
 
 export interface JumpFm {
-    readonly package
-    readonly statusBar: StatusBar
-    readonly root: string
-    readonly settings: Settings
     readonly dialog: Dialog
-    readonly panels: Panel[]
     // Electron.AllElectron
     readonly electron
+    readonly package
+    readonly panels: Panel[]
+    readonly root: string
+    readonly settings: Settings
+    readonly statusBar: StatusBar
 
     bindKeys(name: string, keys?: string[], action?: () => void): {
         filterMode(differentKeys?: string[],
@@ -100,6 +101,6 @@ export interface JumpFm {
     getActivePanel(): Panel
     getActivePanelIndex(): 0 | 1
     getPassivePanel(): Panel
-    switchPanel(): void
     swapPanels(): void
+    switchPanel(): void
 }
