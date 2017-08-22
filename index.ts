@@ -62,6 +62,8 @@ export interface Panel {
     cd(url: Url): void
     deselectAll(): void
     filter(substr: string): void
+    filterHide(): void
+    filterShow(): void
     getCur(): number
     getCurItem(): Item
     getItems(): Item[]
