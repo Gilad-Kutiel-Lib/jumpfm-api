@@ -58,13 +58,11 @@ export interface PanelListener {
 }
 
 export interface Panel {
+    filter: Filter
+
     cd(path: string): void
     cd(url: Url): void
     deselectAll(): void
-    filter(substr: string): void
-    filterHide(): void
-    filterShow(): void
-    getCur(): number
     getCurItem(): Item
     getItems(): Item[]
     getPath(): string
@@ -85,15 +83,25 @@ export interface StatusBar {
     warn(key: string, msg: Msg, clearTimeout?: number): void
 }
 
+export interface Filter {
+    focus(): void
+    hide(): void
+    onChange(handler: (val: string) => void): void
+    // reset does not trigger onChange
+    reset(): void
+    set(val: string): void
+    get(): string
+}
+
 export interface JumpFm {
-    readonly dialog: Dialog
+    // readonly dialog: Dialog
     // Electron.AllElectron
     readonly electron
-    readonly package
+    // readonly package
     readonly panels: Panel[]
-    readonly root: string
-    readonly settings: Settings
-    readonly statusBar: StatusBar
+    // readonly root: string
+    // readonly settings: Settings
+    // readonly statusBar: StatusBar
 
     bindKeys(name: string, keys?: string[], action?: () => void): {
         filterMode(differentKeys?: string[],
@@ -101,7 +109,6 @@ export interface JumpFm {
         )
     }
     getActivePanel(): Panel
-    getActivePanelIndex(): 0 | 1
     getPassivePanel(): Panel
     swapPanels(): void
     switchPanel(): void
