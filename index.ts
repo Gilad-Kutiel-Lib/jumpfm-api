@@ -20,14 +20,18 @@ export interface Settings {
     getNum(key: string, defaultValue: number): number
 }
 
-export interface Item {
-    icon: string
+export interface ItemSet {
     path: string
     name: string
-    size: number
-    mtime: number
-    sel: boolean
-    classes: string[]
+}
+
+export interface ItemGet {
+    path: string
+    name: string
+
+    setIcon(icon: string): ItemGet
+    setSize(size: number): ItemGet
+    setTime(time: number): ItemGet
 }
 
 export interface Msg {
@@ -50,41 +54,32 @@ export interface PanelListener {
     onPanelItemsSet?: () => void
 }
 
-export interface PanelView {
-    getRowCountInPage(): number
-    showFilter(): void
-    hideFilter(): void
-    scroll(rowNum: number): void
-}
-
 export interface Panel {
-    view: PanelView
-
-    getSelectedItemsPaths(): string[]
-    getUrl(): Url
+    // cd(path: string): void
+    // cd(url: Url): void
+    // deselectAll(): void
+    // filter(substr: string): void
+    // getCur(): number
+    // getCurItem(): ItemGet
+    getItems(): ItemGet[]
     getPath(): string
-    getItems(): Item[]
+    // getSelectedItems(): ItemGet[]
+    // getSelectedItemsPaths(): string[]
+    getUrl(): Url
+    // itemFromPath(path: string): ItemGet
     listen(listener: PanelListener): void
-    cd(path: string): void
-    cd(url: Url): void
-    setItems(items: Item[]): void
-    itemFromPath(path: string): Item
-    getCurItem(): Item
-    getSelectedItems(): Item[]
-    step(d: number, select?: boolean)
-    getCur(): number
-    selectAll(): void
-    deselectAll(): void
-    toggleSel(): void
-    filter(substr: string): void
+    // selectAll(): void
+    setItems(items: ItemSet[]): Panel
+    // step(d: number, select?: boolean)
+    // toggleSel(): void
 }
 
 export interface StatusBar {
-    msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
-    info(key: string, msg: Msg, clearTimeout?: number): void
-    warn(key: string, msg: Msg, clearTimeout?: number): void
-    err(key: string, msg: Msg, clearTimeout?: number): void
     clear(key: string): void
+    err(key: string, msg: Msg, clearTimeout?: number): void
+    info(key: string, msg: Msg, clearTimeout?: number): void
+    msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
+    warn(key: string, msg: Msg, clearTimeout?: number): void
 }
 
 export interface JumpFm {
