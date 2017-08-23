@@ -49,13 +49,13 @@ export interface Url {
 }
 
 export interface JumpFm extends Bindable {
-    // readonly dialog: Dialog
-    // Electron.AllElectron
-    readonly panels: Panel[]
-    readonly electron
     // readonly package
     // readonly root: string
-    // readonly settings: Settings
+    readonly dialog: Dialog
+    // Electron.AllElectron
+    readonly electron
+    readonly panels: Panel[]
+    readonly settings: Settings
     readonly statusBar: StatusBar
 
     getPanelActive: () => Panel
@@ -100,8 +100,6 @@ export interface Filter extends Bindable {
     focus(): void
     hide(): void
     onChange(handler: (val: string) => void): void
-    // reset does not trigger onChange
-    clear(): void
     set(val: string): void
     get(): string
 }
