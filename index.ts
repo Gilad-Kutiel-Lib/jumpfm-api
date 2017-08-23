@@ -42,11 +42,6 @@ export interface Item {
     setSelected(selected: boolean): void
 }
 
-export interface Msg {
-    dataTitle?: string
-    txt: string
-}
-
 export interface Url {
     path: string
     protocol: string
@@ -111,10 +106,16 @@ export interface Filter extends Bindable {
     get(): string
 }
 
+export type msgType = 'info' | 'warn' | 'err'
+
+export interface Msg {
+    setType: (type: msgType) => Msg
+    setText: (txt: string) => Msg
+    setTooltip: (txt: string) => Msg
+    setClearTimeout: (timeout: number) => Msg
+    setAttr(name: string, b: boolean)
+}
+
 export interface StatusBar {
-    clear(key: string): void
-    err(key: string, msg: Msg, clearTimeout?: number): void
-    info(key: string, msg: Msg, clearTimeout?: number): void
-    msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
-    warn(key: string, msg: Msg, clearTimeout?: number): void
+    msg: (name: string) => Msg
 }
