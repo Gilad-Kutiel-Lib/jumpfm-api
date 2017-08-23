@@ -1,3 +1,9 @@
+export type filter = (item: Item) => boolean
+
+export interface Bindable {
+    bind(name: string, keys: string[], action: () => void): void
+}
+
 export interface Suggestion {
     value: string
     html: string
@@ -7,9 +13,7 @@ export interface DialogSpec {
     label: string
     onChange?: (val: string) => Suggestion[]
     onOpen?: (input: HTMLInputElement) => void
-
     onAccept: (val: string, sug: Suggestion) => void
-    onDialogOpen: (input: HTMLInputElement) => void
 }
 
 export interface Dialog {
@@ -33,17 +37,14 @@ export interface Item {
     setIcon(icon: string): Item
     setSize(size: number): Item
     setTime(time: number): Item
-    hide(): Item
-    show(): Item
+
+    setHidden(hidden: boolean): void
+    setSelected(selected: boolean): void
 }
 
 export interface Msg {
     dataTitle?: string
     txt: string
-}
-
-export interface StyledMsg extends Msg {
-    classes: string[]
 }
 
 export interface Url {
@@ -52,27 +53,62 @@ export interface Url {
     query: { [key: string]: any }
 }
 
-export interface PanelListener {
-    onPanelCd?: (url?: Url) => void
-    onPanelItemsSet?: () => void
+export interface JumpFm extends Bindable {
+    // readonly dialog: Dialog
+    // Electron.AllElectron
+    readonly panels: Panel[]
+    readonly electron
+    // readonly package
+    // readonly root: string
+    // readonly settings: Settings
+    // readonly statusBar: StatusBar
+
+    getPanelActive: () => Panel
+    getPanelPassive: () => Panel
+
+    panelsSwap: () => void
+    panelsSwitch: () => void
 }
 
-export interface Panel {
-    filter: Filter
+export interface Panel extends Bindable {
+    filterBox: Filter
 
     cd(path: string): void
     cd(url: Url): void
-    deselectAll(): void
-    getCurItem(): Item
-    getItems(): Item[]
-    getPath(): string
-    getSelectedItems(): Item[]
-    getUrl(): Url
-    listen(listener: PanelListener): void
-    selectAll(): void
-    setItems(items: File[]): Panel
-    step(d: number, select?: boolean)
-    toggleCurSel(): void
+
+    onCd: (then: () => void) => void
+    onItemsAdded: (then: (newItems: Item[]) => void) => void
+
+
+    step: (d: number, select?: boolean) => void
+    stepPgUp: (select?: boolean) => void
+    stepPgDown: (select?: boolean) => void
+    stepStart: (select?: boolean) => void
+    stepEnd: (select?: boolean) => void
+
+    selectNone: () => void
+    selectAll: () => void
+    selectToggleCurrent: () => void
+
+    getUrl: () => Url
+    getItems: () => Item[]
+    getSelectedItems: () => Item[]
+    getCurrentItem: () => Item
+
+    setItems: (items: File[]) => Panel
+
+    filterSet: (name: string, filter: filter) => void
+    filterRemove: (name: string) => void
+}
+
+export interface Filter extends Bindable {
+    focus(): void
+    hide(): void
+    onChange(handler: (val: string) => void): void
+    // reset does not trigger onChange
+    clear(): void
+    set(val: string): void
+    get(): string
 }
 
 export interface StatusBar {
@@ -81,35 +117,4 @@ export interface StatusBar {
     info(key: string, msg: Msg, clearTimeout?: number): void
     msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
     warn(key: string, msg: Msg, clearTimeout?: number): void
-}
-
-export interface Filter {
-    focus(): void
-    hide(): void
-    onChange(handler: (val: string) => void): void
-    // reset does not trigger onChange
-    reset(): void
-    set(val: string): void
-    get(): string
-}
-
-export interface JumpFm {
-    // readonly dialog: Dialog
-    // Electron.AllElectron
-    readonly electron
-    // readonly package
-    readonly panels: Panel[]
-    // readonly root: string
-    // readonly settings: Settings
-    // readonly statusBar: StatusBar
-
-    bindKeys(name: string, keys?: string[], action?: () => void): {
-        filterMode(differentKeys?: string[],
-            differentAction?: () => void,
-        )
-    }
-    getActivePanel(): Panel
-    getPassivePanel(): Panel
-    swapPanels(): void
-    switchPanel(): void
 }
