@@ -11,7 +11,7 @@ export interface Suggestion {
 
 export interface DialogSpec {
     label: string
-    onChange?: (val: string) => Suggestion[]
+    suggest?: (val: string) => Suggestion[]
     onOpen?: (input: HTMLInputElement) => void
     onAccept: (val: string, sug: Suggestion) => void
 }
@@ -50,7 +50,7 @@ export interface Url {
 
 export interface JumpFm extends Bindable {
     // readonly package
-    // readonly root: string
+    readonly root: string
     readonly dialog: Dialog
     // Electron.AllElectron
     readonly electron
