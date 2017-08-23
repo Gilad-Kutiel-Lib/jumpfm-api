@@ -56,7 +56,7 @@ export interface JumpFm extends Bindable {
     // readonly package
     // readonly root: string
     // readonly settings: Settings
-    // readonly statusBar: StatusBar
+    readonly statusBar: StatusBar
 
     getPanelActive: () => Panel
     getPanelPassive: () => Panel
