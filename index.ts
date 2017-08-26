@@ -1,3 +1,9 @@
+export type filter = (item: Item) => boolean
+
+export interface Bindable {
+    bind(name: string, keys: string[], action: () => void): void
+}
+
 export interface Suggestion {
     value: string
     html: string
@@ -5,8 +11,8 @@ export interface Suggestion {
 
 export interface DialogSpec {
     label: string
+    suggest?: (val: string) => Suggestion[]
     onOpen?: (input: HTMLInputElement) => void
-    onChange?: (val: string) => Suggestion[]
     onAccept: (val: string, sug: Suggestion) => void
 }
 
@@ -19,91 +25,102 @@ export interface Settings {
     getNum(key: string, defaultValue: number): number
 }
 
-export interface Item {
-    icon: string
+export interface File {
     path: string
     name: string
-    size: number
-    mtime: number
-    sel: boolean
-    classes: string[]
 }
 
-export interface Msg {
-    txt: string
-    dataTitle?: string
-}
+export interface Item {
+    path: string
+    name: string
 
-export interface StyledMsg extends Msg {
-    classes: string[]
+    setAttribute(name: string, val?: string): Item
+
+    setIcon(src: string): Item
+    setSize(size: number): Item
+    setTime(time: number): Item
+
+    setHidden(hidden: boolean): void
+    setSelected(selected: boolean): void
 }
 
 export interface Url {
-    protocol: string
     path: string
+    protocol: string
     query: { [key: string]: any }
 }
 
-export interface PanelListener {
-    onPanelCd?: (url?: Url) => void
-    onPanelItemsSet?: () => void
+export interface JumpFm extends Bindable {
+    readonly package
+    readonly root: string
+    readonly dialog: Dialog
+    // Electron.AllElectron
+    readonly electron
+    readonly panels: Panel[]
+    readonly settings: Settings
+    readonly statusBar: StatusBar
+    readonly argv: string[]
+
+    getPanelActive: () => Panel
+    getPanelPassive: () => Panel
+
+    panelsSwap: () => void
+    panelsSwitch: () => void
+
+    watchStart(name: string, path: string, then: () => void)
+    watchStop(name: string)
 }
 
-export interface PanelView {
-    getRowCountInPage(): number
-    showFilter(): void
-    hideFilter(): void
-    scroll(rowNum: number): void
-}
+export interface Panel extends Bindable {
+    filterBox: FilterBox
 
-export interface Panel {
-    view: PanelView
-
-    getSelectedItemsPaths(): string[]
-    getUrl(): Url
-    getPath(): string
-    getItems(): Item[]
-    listen(listener: PanelListener): void
     cd(path: string): void
     cd(url: Url): void
-    setItems(items: Item[]): void
-    itemFromPath(path: string): Item
-    getCurItem(): Item
-    getSelectedItems(): Item[]
-    step(d: number, select?: boolean)
-    getCur(): number
-    selectAll(): void
-    deselectAll(): void
-    toggleSel(): void
-    filter(substr: string): void
+
+    onCd: (then: () => void) => void
+    onItemsAdded: (then: (newItems: Item[]) => void) => void
+    onLoad: (then: () => void) => void
+
+    step: (d: number, select?: boolean) => void
+    stepPgUp: (select?: boolean) => void
+    stepPgDown: (select?: boolean) => void
+    stepStart: (select?: boolean) => void
+    stepEnd: (select?: boolean) => void
+
+    selectNone: () => void
+    selectAll: () => void
+    selectToggleCurrent: () => void
+
+    getUrl: () => Url
+    getItems: () => Item[]
+    getSelectedItems: () => Item[]
+    getCurrentItem: () => Item
+
+    setItems: (items: File[]) => Panel
+
+    filterSet: (name: string, filter: filter) => void
+    filterRemove: (name: string) => void
+}
+
+export interface FilterBox extends Bindable {
+    focus(): void
+    hide(): void
+    onChange(handler: (val: string) => void): void
+    set(val: string): void
+    get(): string
+}
+
+export type msgType = 'info' | 'warn' | 'err'
+
+export interface Msg {
+    setType: (type: msgType) => Msg
+    setText: (txt: string) => Msg
+    setTooltip: (txt: string) => Msg
+    setClearTimeout: (timeout: number) => Msg
+    setAttr(name: string, b: boolean)
 }
 
 export interface StatusBar {
-    msg(classes: string[]): (kwy: string, msg: Msg, clearTimeout?: number) => void
-    info(key: string, msg: Msg, clearTimeout?: number): void
-    warn(key: string, msg: Msg, clearTimeout?: number): void
-    err(key: string, msg: Msg, clearTimeout?: number): void
-    clear(key: string): void
-}
-
-export interface JumpFm {
-    readonly package
-    readonly statusBar: StatusBar
-    readonly root: string
-    readonly settings: Settings
-    readonly dialog: Dialog
-    readonly panels: Panel[]
-    // Electron.AllElectron
-    readonly electron
-
-    bindKeys(name: string, keys?: string[], action?: () => void): {
-        filterMode(differentKeys?: string[],
-            differentAction?: () => void,
-        )
-    }
-    getActivePanel(): Panel
-    getActivePanelIndex(): 0 | 1
-    getPassivePanel(): Panel
-    switchPanel(): void
-    swapPanels(): void
+    msg: (name: string) => Msg
+    clear: (name: string) => void
 }
