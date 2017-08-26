@@ -1,1 +1,1 @@
-API for JumpFm plugin development.
+API for [JumpFm](http://jumpfm.org/) plugin development.
