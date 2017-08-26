@@ -34,7 +34,9 @@ export interface Item {
     path: string
     name: string
 
-    setIcon(icon: string): Item
+    setAttribute(name: string, val?: string): Item
+
+    setIcon(src: string): Item
     setSize(size: number): Item
     setTime(time: number): Item
 
@@ -49,7 +51,7 @@ export interface Url {
 }
 
 export interface JumpFm extends Bindable {
-    // readonly package
+    readonly package
     readonly root: string
     readonly dialog: Dialog
     // Electron.AllElectron
@@ -57,23 +59,27 @@ export interface JumpFm extends Bindable {
     readonly panels: Panel[]
     readonly settings: Settings
     readonly statusBar: StatusBar
+    readonly argv: string[]
 
     getPanelActive: () => Panel
     getPanelPassive: () => Panel
 
     panelsSwap: () => void
     panelsSwitch: () => void
+
+    watchStart(name: string, path: string, then: () => void)
+    watchStop(name: string)
 }
 
 export interface Panel extends Bindable {
-    filterBox: Filter
+    filterBox: FilterBox
 
     cd(path: string): void
     cd(url: Url): void
 
     onCd: (then: () => void) => void
     onItemsAdded: (then: (newItems: Item[]) => void) => void
-
+    onLoad: (then: () => void) => void
 
     step: (d: number, select?: boolean) => void
     stepPgUp: (select?: boolean) => void
@@ -96,7 +102,7 @@ export interface Panel extends Bindable {
     filterRemove: (name: string) => void
 }
 
-export interface Filter extends Bindable {
+export interface FilterBox extends Bindable {
     focus(): void
     hide(): void
     onChange(handler: (val: string) => void): void
@@ -116,4 +122,5 @@ export interface Msg {
 
 export interface StatusBar {
     msg: (name: string) => Msg
+    clear: (name: string) => void
 }
