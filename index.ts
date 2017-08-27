@@ -67,7 +67,7 @@ export interface JumpFm extends Bindable {
     panelsSwap: () => void
     panelsSwitch: () => void
 
-    watchStart(name: string, path: string, then: () => void)
+    watchStart(name: string, path: string, then: () => void, recursive?: boolean)
     watchStop(name: string)
 }
 
