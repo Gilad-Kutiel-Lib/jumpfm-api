@@ -123,4 +123,5 @@ export interface Msg {
 export interface StatusBar {
     msg: (name: string) => Msg
     clear: (name: string) => void
+    buttonAdd(name: string, tooltip: string, action: () => void)
 }
