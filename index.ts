@@ -28,12 +28,11 @@ export interface Settings {
 export interface File {
     path: string
     name: string
+    isDirectory: () => boolean
+    open: () => void
 }
 
-export interface Item {
-    path: string
-    name: string
-
+export interface Item extends File {
     setAttribute(name: string, val?: string): Item
 
     setIcon(src: string): Item
